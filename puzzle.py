@@ -49,14 +49,7 @@ class PuzzleState:
                 if self.matrix[i][j] == tile:
                     return i,j
     
-    def h(self,target):
-        total = 0
-        for tile in range(1,9):
-            [i,j]=self.indiciesof(tile)
-            [iTarget,jTarget]=target.indiciesof(tile)
-            total += abs(i-iTarget)+abs(j-jTarget)
-             
-        return total
+    
         
 
 if __name__ == "__main__":
