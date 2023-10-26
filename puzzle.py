@@ -1,8 +1,17 @@
 import copy
+import math
 
-class PuzzleState:
-    def __init__(self,twoDArray):
+class PuzzleState: # carries the state representation + tree's node children and parent
+    # if it's the start case don't enter parent parameter else
+    def __init__(self,twoDArray,children=[],parent=None):
         self.matrix = twoDArray
+        self.children=children
+        self.parent = parent
+        
+        if parent is not None:
+            self.g = 1+self.parent.g
+        else:
+            self.g = 0
 
     def __str__(self):
         str=''
@@ -14,7 +23,7 @@ class PuzzleState:
         str += '\n\n'
         return str
     
-    def next_States(self):
+    def nextStates(self):
         states = []
         for i in range(3):
             for j in range(3):
@@ -43,6 +52,18 @@ class PuzzleState:
     
         return states
     
+
+    def h(self,target,flag='M'):
+        total = 0
+        for tile in range(1,9):
+            [i,j]=self.indiciesof(tile)
+            [iTarget,jTarget]=target.indiciesof(tile)
+            if flag == 'M':
+                total += manhattanDistance(i,iTarget,j,jTarget)
+            else:
+                total += euclideanDistance(i,iTarget,j,jTarget)
+
+        return total
     def indiciesof(self,tile):
         for i in range(3):
             for j in range(3):
@@ -52,6 +73,11 @@ class PuzzleState:
     
     
         
+def manhattanDistance(i,it,j,jt):
+        return abs(i-it)+abs(j-jt)
+        
+def euclideanDistance(i,it,j,jt):
+    return math.sqrt((i-it)**2 + (j-jt)**2)
 
 if __name__ == "__main__":
     
@@ -64,14 +90,14 @@ if __name__ == "__main__":
     #   4   5   6
     #   7   8
 
-    # states = startState.next_States()
+    states = startState.nextStates()
 
-    # print("current state:")
-    # print(startState)
-    # print("next states:")
-    # for state in states:
-    #     print(state)
+    print("current state:")
+    print(startState)
+    print("next states:")
+    for state in states:
+        print(state)
 
-    # print(startState.h(targetState))
+    print(startState.h(targetState))
 
     
