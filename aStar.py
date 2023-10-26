@@ -1,39 +1,58 @@
 import puzzle
-import math
+from queue import PriorityQueue
 
 
-def manhattanDistance(i,it,j,jt):
-        return abs(i-it)+abs(j-jt)
-    
-def euclideanDistance(i,it,j,jt):
-    return math.sqrt((i-it)**2 + (j-jt)**2)
+class Tree:
+    def __init__(self,rootNodeState,targetState):
+        self.root = rootNodeState
+        self.target = targetState
 
-def h(self,target,flag='M'):
-    total = 0
-    for tile in range(1,9):
-        [i,j]=self.indiciesof(tile)
-        [iTarget,jTarget]=target.indiciesof(tile)
-        if flag == 'M':
-            total += manhattanDistance(i,iTarget,j,jTarget)
-        else:
-            total += euclideanDistance(i,iTarget,j,jTarget)
+    def aStarTraverse(self):
+        
+        # frontier is the queue 
+        frontier = PriorityQueue()
+        frontier.put((self.root.h(),self.root))
 
-    return total
+        # explored is the set of all visited nodes
+        explored = set()
+        
+        while not frontier.empty:
+            currentState=frontier.get()
+            explored.add(currentState)
+
+            if currentState == self.target:
+                return currentState
+            # returning the final target then a function takes that output and make an array for the path
+            # that function is not done
+            
+            neighbors = currentState.nextStates()
+
+            for neighbor in neighbors:
+                if neighbor not in frontier and neighbor not in explored:
+                    frontier.put((neighbor.h()+neighbor.g,neighbor))
+                elif neighbor in frontier:
+                    frontier.
+                    # to be continued
+
+        return None
 
 
-# startState=puzzle.PuzzleState([[1,2,3],[4,None,6],[5,7,8]])
-# #   1   2   3
-# #   4       6
-# #   5   7   8
-# targetState=puzzle.PuzzleState([[1,2,3],[4,5,6],[7,8,None]])
-# #   1   2   3
-# #   4   5   6
-# #   7   8
 
-# # states = startState.next_States()
 
-# # print("current state:")
-# # print(startState)
-# # print("next states:")
-# # for state in states:
-# #     print(state)
+
+startState=puzzle.PuzzleState([[1,2,3],[4,None,6],[5,7,8]])
+#   1   2   3
+#   4       6
+#   5   7   8
+targetState=puzzle.PuzzleState([[1,2,3],[4,5,6],[7,8,None]])
+#   1   2   3
+#   4   5   6
+#   7   8
+
+states = startState.nextStates()
+
+# print("current state:")
+# print(startState)
+# print("next states:")
+# for state in states:
+#     print(state)
