@@ -9,10 +9,18 @@ class PuzzleState: # carries the state representation + tree's node children and
         self.parent = parent
         
         if parent is not None:
-            self.g = 1+self.parent.g
+            self.level = 1+self.parent.g
         else:
-            self.g = 0
+            self.level = 0
 
+    def __hash__(self) -> int:
+        result = 0
+        for i in range(3):
+            for j in range(3):
+                if self.matrix[i][j] is not None:
+                    result+= self.matrix[i][j]*(10**(j+i*3))
+        return result
+    
     def __str__(self):
         str=''
         for i in range(3):
@@ -34,19 +42,23 @@ class PuzzleState: # carries the state representation + tree's node children and
         
         if j<2:
             newState=copy.deepcopy(self)
+            newState.level = self.level+1
             newState.matrix[i][j],newState.matrix[i][j+1]=newState.matrix[i][j+1],newState.matrix[i][j]
             states.append(newState)
         if j>0:
             newState=copy.deepcopy(self)
+            newState.level = self.level+1
             newState.matrix[i][j],newState.matrix[i][j-1]=newState.matrix[i][j-1],newState.matrix[i][j]
             states.append(newState)
 
         if i<2:
             newState=copy.deepcopy(self)
+            newState.level = self.level+1
             newState.matrix[i][j],newState.matrix[i+1][j]=newState.matrix[i+1][j],newState.matrix[i][j]
             states.append(newState)
         if i>0:
             newState=copy.deepcopy(self)
+            newState.level = self.level+1
             newState.matrix[i][j],newState.matrix[i-1][j]=newState.matrix[i-1][j],newState.matrix[i][j]
             states.append(newState)
     
