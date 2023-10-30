@@ -7,7 +7,7 @@ class Tree:
         self.root = rootNodeState
         self.target = targetState
 
-    def aStarTraverse(self):
+    def aStarTraverse(self)->(PuzzleState):
         # frontier is the queue of matrices 
         frontier = heapdict()
         frontier[self.root]=self.root.h(self.target)
@@ -25,7 +25,8 @@ class Tree:
             print(currentState)
             
             if currentState.matrix == self.target.matrix:
-                print("=========== final State ==========")
+                print("=========== Goal reached ==========")
+                
                 return currentState
             # returning the final target then a function takes that output and make an array for the path
             

@@ -7,7 +7,7 @@ class PuzzleState: # carries the state representation + tree's node children and
         self.matrix = twoDArray
         self.children=children
         self.parent = parent
-        
+        self.heuristic = None
         if parent is not None:
             self.level = 1+self.parent.g
         else:
@@ -43,22 +43,26 @@ class PuzzleState: # carries the state representation + tree's node children and
         if j<2:
             newState=copy.deepcopy(self)
             newState.level = self.level+1
+            newState.parent = self
             newState.matrix[i][j],newState.matrix[i][j+1]=newState.matrix[i][j+1],newState.matrix[i][j]
             states.append(newState)
         if j>0:
             newState=copy.deepcopy(self)
             newState.level = self.level+1
+            newState.parent = self
             newState.matrix[i][j],newState.matrix[i][j-1]=newState.matrix[i][j-1],newState.matrix[i][j]
             states.append(newState)
 
         if i<2:
             newState=copy.deepcopy(self)
             newState.level = self.level+1
+            newState.parent = self
             newState.matrix[i][j],newState.matrix[i+1][j]=newState.matrix[i+1][j],newState.matrix[i][j]
             states.append(newState)
         if i>0:
             newState=copy.deepcopy(self)
             newState.level = self.level+1
+            newState.parent = self
             newState.matrix[i][j],newState.matrix[i-1][j]=newState.matrix[i-1][j],newState.matrix[i][j]
             states.append(newState)
     
@@ -74,7 +78,8 @@ class PuzzleState: # carries the state representation + tree's node children and
                 total += manhattanDistance(i,iTarget,j,jTarget)
             else:
                 total += euclideanDistance(i,iTarget,j,jTarget)
-
+        
+        self.heuristic = total
         return total
     def indiciesof(self,tile):
         for i in range(3):
