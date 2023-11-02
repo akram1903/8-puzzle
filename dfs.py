@@ -68,7 +68,7 @@ class State:
         print(f"search depth is :{search_depth}")
 
         # for ex in explored:
-        #     print(ex)
+        #     print(ex.twoDarray)
 
 
 def dfs_search(initial_state):
@@ -76,22 +76,21 @@ def dfs_search(initial_state):
     search_depth = 0
     explored = set()
     stacksearch = set()
-    # stacksearch.add(initial_state)
-    stacksearch.add(tuple(map(tuple, initial_state.twoDarray)))
+    stacksearch.add(initial_state)
     hashmap_depth = {}
     hashmap = {}
     hashmap[initial_state] = initial_state
     while stack:
         current_state = stack.pop()
-        search_depth = max(search_depth,current_state.moves)
-        stacksearch.remove(tuple(map(tuple,current_state.twoDarray)))
+        search_depth = max(search_depth, current_state.moves)
+        stacksearch.remove(current_state)
         # hashmap[current_state] = current_state.parent
         if current_state.is_goal_state():
             current_state.print_path(hashmap, initial_state, search_depth, explored)
             return current_state
             # return current_state.get_solution() ,search_depth
 
-        explored.add(tuple(map(tuple,current_state.twoDarray)))
+        explored.add(current_state)
 
         possible_moves = current_state.get_possible_moves()
 
@@ -100,7 +99,7 @@ def dfs_search(initial_state):
             if new_state not in explored and new_state not in stacksearch:
                 stack.append(new_state)
                 hashmap[new_state] = current_state
-                stacksearch.add(tuple(map(tuple,current_state.twoDarray)))
+                stacksearch.add(new_state)
 
     return None
 
@@ -116,4 +115,3 @@ if __name__ == "__main__":
     end = time.time()
     print("The time of execution of DFS :",
           (end - start) * 10 ** 3, "ms")
-
