@@ -69,12 +69,12 @@ class PuzzleState: # carries the state representation + tree's node children and
         return states
     
 
-    def h(self,target,flag='M'):
+    def h(self,target,flag):
         total = 0
         for tile in range(1,9):
             [i,j]=self.indiciesof(tile)
             [iTarget,jTarget]=target.indiciesof(tile)
-            if flag == 'M':
+            if flag == 'M' or flag == 'm':
                 total += manhattanDistance(i,iTarget,j,jTarget)
             else:
                 total += euclideanDistance(i,iTarget,j,jTarget)
@@ -98,7 +98,7 @@ def euclideanDistance(i,it,j,jt):
 
 if __name__ == "__main__":
     
-    startState=PuzzleState([[1,2,3],[4,None,6],[5,7,8]])
+    startState=PuzzleState([[1,2,3],[4,5,6],[7,8,None]])
     #   1   2   3
     #   4       6
     #   5   7   8
@@ -115,6 +115,9 @@ if __name__ == "__main__":
     for state in states:
         print(state)
 
-    print(startState.h(targetState))
+    print(startState.h(targetState,'m'))
+
+
+
 
     
