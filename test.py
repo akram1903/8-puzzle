@@ -36,3 +36,4 @@
 # g.add_edges_from([(1,2),("hello",1)])
 # print(g.graph)
 
+print("ay 7aga")
