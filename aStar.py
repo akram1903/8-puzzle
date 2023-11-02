@@ -7,10 +7,10 @@ class Tree:
         self.root = rootNodeState
         self.target = targetState
 
-    def aStarTraverse(self)->(PuzzleState):
+    def aStarTraverse(self,flag)->(PuzzleState):
         # frontier is the queue of matrices 
         frontier = heapdict()
-        frontier[self.root]=self.root.h(self.target)
+        frontier[self.root]=self.root.h(self.target,flag)
         # frontierDict is to hold frontier States with matrix as key
         # frontierDict = {self.root.matrix : self.root}
         # explored is the set of all visited nodes matrices
@@ -35,7 +35,7 @@ class Tree:
             for neighbor in neighbors:
                 # print("##############__neighbors__##############")
                 if neighbor.__hash__() not in set(frontier.keys()) and neighbor.__hash__() not in explored:
-                    frontier[neighbor]=neighbor.h(self.target)+neighbor.level
+                    frontier[neighbor]=neighbor.h(self.target,flag)+neighbor.level
                 elif neighbor.__hash__() in frontier:
                     cost = neighbor.h(self.target)+neighbor.level
                     if frontier[neighbor]> cost:
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
 
     solutionClass = Tree(startState,targetState)
-    solution = solutionClass.aStarTraverse()
+    solution = solutionClass.aStarTraverse(flag='M')
     print(solution)
     # print("current state:")
     # print(startState)
