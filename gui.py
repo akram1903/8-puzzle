@@ -88,7 +88,7 @@ def ShowPuzzle(outputState):
     global levelLabel
     for i in range(3):
             for j in range(3):
-                if outputState.matrix[i][j] is None:
+                if outputState.matrix[i][j] is None or outputState.matrix[i][j] == 0:
                     labels[i][j] = Label(window,text=f'   ',font=('Arial',int(120*SCALE)),foreground='#D6E4E5',background="#50577A")
                     labels[i][j].place(x=5+200*SCALE*j,y=5+200*SCALE*i)
                     continue
@@ -96,8 +96,10 @@ def ShowPuzzle(outputState):
                 labels[i][j].place(x=5+200*SCALE*j,y=5+200*SCALE*i)
                 # labels[i][j].bind("<Button-1>",drag_start)
                 # labels[i][j].bind("<B1-Motion>",drag_motion)
-    
-    hLabel.config(text=f"{outputState.heuristic}")
+    if isinstance(outputState,puzzle.PuzzleState):
+        hLabel.config(text=f"{outputState.heuristic}")
+    else:
+        hLabel.config(text="no h for this algorithm")
     levelLabel.config(text=f"{outputState.level}")
 
 
