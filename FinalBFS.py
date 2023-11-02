@@ -11,12 +11,12 @@ col = [ 0, -1, 0, 1 ]
 class node:
 
 
-     def __init__(self, parent, mat, empty_tile_pos,  cost, level):  
+     def __init__(self, parent, matrix, empty_tile_pos,  cost, level):  
            # This will store the parent node to the  current node And helps in tracing the  path when the solution is visible  
           self.parent = parent  
           
           # Stores the matrix
-          self.mat = mat
+          self.matrix = matrix
           
           # useful for Storing the position where the   empty space tile is already existing in the matrix  
           self.empty_tile_pos = empty_tile_pos
@@ -27,14 +27,14 @@ class node:
           # Store no. of moves so far  
           self.level= level
      def __repr__(self):  
-        return "Parent:% s Matrix:% s emptyPosition:% s costs:% s level:% s" % (self.parent, self.mat, self.empty_tile_pos, self.costs ,self.level)  
+        return "Parent:% s Matrix:% s emptyPosition:% s costs:% s level:% s" % (self.parent, self.matrix, self.empty_tile_pos, self.costs ,self.level)  
         
         
-def newNode(mat, empty_tile_pos, new_empty_tile_pos,
+def newNode(matrix, empty_tile_pos, new_empty_tile_pos,
             level, parent, cost,final) -> node:
                  
     # Copy data from parent matrix to current matrix
-    new_mat = copy.deepcopy(mat)
+    new_mat = copy.deepcopy(matrix)
  
     # Move tile by 1 position
     x1 = empty_tile_pos[0]
@@ -72,7 +72,7 @@ def printPath(root):
         return
      
     printPath(root.parent)
-    printMatrix(root.mat)
+    printMatrix(root.matrix)
     print()
 # A utility function to count
 # inversions in given array 'arr[]'
@@ -114,21 +114,21 @@ def solve_BFS(initial, empty_tile_pos, final):
                #       Append Initial state
                # print(root)
                frontier.put(root)
-               frontier_Set.add(tuple(map(tuple,root.mat)))
+               frontier_Set.add(tuple(map(tuple,root.matrix)))
                #print(frontier)
                #       Set for explored States
                explored=set()
                #explored=[]
                while not frontier.empty(): #     while the queue is not empty 
                     Node=frontier.get()    #     deque state in Queue
-                    frontier_Set.remove(tuple(map(tuple,Node.mat)))
+                    frontier_Set.remove(tuple(map(tuple,Node.matrix)))
                     
-                    print("Expanded:",Node.mat)
-                    explored.add(tuple(map(tuple,Node.mat))) 
+                    print("Expanded:",Node.matrix)
+                    explored.add(tuple(map(tuple,Node.matrix))) 
                    # explored.append(Node.mat) 
                     #     Add state to explored set
           
-                    if Node.mat == final : #      if state is the goal state 
+                    if Node.matrix == final : #      if state is the goal state 
                          # End timer
                          end_time = time.time()
                          
@@ -147,7 +147,7 @@ def solve_BFS(initial, empty_tile_pos, final):
                          print("search Depth: ",Node.level)
                          print("Running time: ", elapsed_time,"s") 
                          
-                         return          #      Return goal State
+                         return  Node     #      Return goal State
                     # Generate all possible children
                     for i in range(4):
                          new_tile_pos = [
@@ -157,11 +157,11 @@ def solve_BFS(initial, empty_tile_pos, final):
                          if isSafe(new_tile_pos[0], new_tile_pos[1]):
                               
                               # Create a child node
-                              child = newNode(Node.mat,Node.empty_tile_pos,new_tile_pos,Node.level + 1,Node,Node.cost + 1 ,final,)
-                              if ((tuple(map(tuple,child.mat))) not in frontier_Set) and  ((tuple(map(tuple,child.mat))) not in explored): 
+                              child = newNode(Node.matrix,Node.empty_tile_pos,new_tile_pos,Node.level + 1,Node,Node.cost + 1 ,final,)
+                              if ((tuple(map(tuple,child.matrix))) not in frontier_Set) and  ((tuple(map(tuple,child.matrix))) not in explored): 
                               #       If the new state is not already in the queue and not already explored enqueue in the queue 
                                    frontier.put(child)
-                                   frontier_Set.add(tuple(map(tuple,child.mat)))
+                                   frontier_Set.add(tuple(map(tuple,child.matrix)))
                                    
     
      else :

@@ -12,6 +12,10 @@ from tkinter import *
 import puzzle
 import aStar
 import solvable
+import FinalBFS
+import dfs
+import time
+
 
 SCALE = 0.7
 window = Tk()
@@ -166,10 +170,25 @@ def startSolve():
     print(f'algorithm = {algorithm}')
     # bfs
     if algorithm == 0:
-        pass
+        initial = startState.matrix
+        final = targetState.matrix
+        solution = FinalBFS.solve_BFS(initial, FinalBFS.findZero(initial), final)
     # dfs
     elif algorithm == 1:
-        pass
+
+        mat = startState.matrix
+        for i in range(3):
+            for j in range(3):
+                if mat[i][j] == None:
+                    mat[i][j] = 0
+
+        initial_state = dfs.State(mat)
+        start = time.time()
+
+        solution = dfs.dfs_search(initial_state)
+        end = time.time()
+        print("The time of execution of DFS :",
+            (end - start) * 10 ** 3, "ms")
     # euclidean a*
     elif algorithm == 2:
         solutionTree = aStar.Tree(startState,targetState)

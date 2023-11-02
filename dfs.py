@@ -2,64 +2,64 @@ import time
 
 
 class State:
-    def __init__(self, twoDarray, moves=0, parent=None):
-        self.twoDarray = twoDarray
-        self.moves = moves
+    def __init__(self, matrix, level=0, parent=None):
+        self.matrix = matrix
+        self.level = level
         self.parent = parent
 
     def __eq__(self, other):
-        return self.twoDarray == other.twoDarray
+        return self.matrix == other.matrix
 
     def __lt__(self, other):
-        return self.twoDarray < other.twoDarray
+        return self.matrix < other.matrix
 
     def __hash__(self):
-        return hash(str(self.twoDarray))
+        return hash(str(self.matrix))
 
     def is_goal_state(self):
-        return self.twoDarray == [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
-        # return self.twoDarray ==[1, 2, 5], [3, 4, 0], [6, 7, 8]
+        return self.matrix == [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+        # return self.matrix ==[1, 2, 5], [3, 4, 0], [6, 7, 8]
         # b l t r
 
-    def get_possible_moves(self):
-        moves = []
+    def get_possible_level(self):
+        level = []
         row, col = self.find_blank()
         if row > 0:
-            moves.append((-1, 0))
+            level.append((-1, 0))
         if row < 2:
-            moves.append((1, 0))
+            level.append((1, 0))
         if col > 0:
-            moves.append((0, -1))
+            level.append((0, -1))
         if col < 2:
-            moves.append((0, 1))
-        return moves
+            level.append((0, 1))
+        return level
 
     def find_blank(self):
         for i in range(3):
             for j in range(3):
-                if self.twoDarray[i][j] == 0:
+                if self.matrix[i][j] == 0:
                     return i, j
 
     def apply_move(self, move):
-        twoDarray = [row[:] for row in self.twoDarray]
+        matrix = [row[:] for row in self.matrix]
         row, col = self.find_blank()
         drow, dcol = move
-        twoDarray[row][col], twoDarray[row + drow][col + dcol] = twoDarray[row + drow][col + dcol], twoDarray[row][col]
-        return State(twoDarray, self.moves + 1, self)
+        matrix[row][col], matrix[row + drow][col + dcol] = matrix[row + drow][col + dcol], matrix[row][col]
+        return State(matrix, self.level + 1, self)
 
     def print_path(self, hashmap, initial_state, search_depth, explored):
         if hashmap is None:
             print("No solution found.")
             return
         node = self
-        # x = self.twoDarray
+        # x = self.matrix
         """Prints the path from the root node to the given node"""
         path = []
-        path.append(node.twoDarray)
+        path.append(node.matrix)
         while hashmap[node] != initial_state:
-            path.append(hashmap[node].twoDarray)
+            path.append(hashmap[node].matrix)
             node = hashmap[node]
-        path.append(initial_state.twoDarray)
+        path.append(initial_state.matrix)
         path.reverse()
         for i, step in enumerate(path):
             print(f'Step {i + 1}: {step}')
@@ -68,7 +68,7 @@ class State:
         print(f"search depth is :{search_depth}")
 
         # for ex in explored:
-        #     print(ex.twoDarray)
+        #     print(ex.matrix)
 
 
 def dfs_search(initial_state):
@@ -82,7 +82,7 @@ def dfs_search(initial_state):
     hashmap[initial_state] = initial_state
     while stack:
         current_state = stack.pop()
-        search_depth = max(search_depth, current_state.moves)
+        search_depth = max(search_depth, current_state.level)
         stacksearch.remove(current_state)
         # hashmap[current_state] = current_state.parent
         if current_state.is_goal_state():
@@ -92,9 +92,9 @@ def dfs_search(initial_state):
 
         explored.add(current_state)
 
-        possible_moves = current_state.get_possible_moves()
+        possible_level = current_state.get_possible_level()
 
-        for move in possible_moves:
+        for move in possible_level:
             new_state = current_state.apply_move(move)
             if new_state not in explored and new_state not in stacksearch:
                 stack.append(new_state)
