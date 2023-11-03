@@ -136,7 +136,7 @@ def a_manhattan():
     algorithm = 3
     print(algorithm)
 
-def resetPuzzle():
+def resetPuzzle(event = None):
     global entrySet,tileIndex,startState,solutionIndex,solutionPath,algorithm
 
     entrySet.clear()
@@ -172,7 +172,7 @@ def buildTile(num):
         startButton = Button(window,foreground='#D6E4E5',background="#50577A",text='start',command=startSolve,font=('arial',18))
         startButton.place(x=SCALE*700,y=SCALE*(300))
         resetButton = Button(window,foreground='#D6E4E5',background="#50577A",text='reset',command=resetPuzzle,font=('arial',14))
-        resetButton.place(x=SCALE*700,y=SCALE*(600))
+        resetButton.place(x=SCALE*700,y=SCALE*(550))
         
         
 # =================___edit here___================= 
@@ -285,7 +285,7 @@ if __name__ == "__main__":
     window.bind("<Right>",goForward)
     window.bind("<Escape>",terminate)
     # window.bind("<Key>",printKeys)
-
+    window.bind("<BackSpace>",resetPuzzle)
 
     # keys to input the puzzle to be solved
     window.bind("<Key>",keyPressed)
