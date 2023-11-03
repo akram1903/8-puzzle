@@ -1,6 +1,6 @@
 from puzzle import *
 from heapdict import *
-
+import time
 
 class Tree:
     def __init__(self,rootNodeState:PuzzleState,targetState:PuzzleState):
@@ -8,6 +8,8 @@ class Tree:
         self.target = targetState
 
     def aStarTraverse(self,flag)->(PuzzleState):
+        t0=time.time()
+        totalStates = 0
         # frontier is the queue of matrices 
         frontier = heapdict()
         frontier[self.root]=self.root.h(self.target,flag)
@@ -20,13 +22,13 @@ class Tree:
             (currentState,notUsed)=frontier.popitem()
             # currentState =frontierDict[currentMatrix]
             explored.add(currentState.__hash__())
-            
+            totalStates += 1
             print("________States explored________")
             print(currentState)
             
             if currentState.matrix == self.target.matrix:
                 print("=========== Goal reached ==========")
-                
+                print(f"took {time.time() - t0} secs",f'total states is {totalStates}',sep='\n')
                 return currentState
             # returning the final target then a function takes that output and make an array for the path
             
