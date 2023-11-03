@@ -136,6 +136,21 @@ def a_manhattan():
     algorithm = 3
     print(algorithm)
 
+def resetPuzzle():
+    global entrySet,tileIndex,startState,solutionIndex,solutionPath,algorithm
+
+    entrySet.clear()
+    tileIndex = 0
+    solutionIndex=0
+    solutionPath.clear()
+    algorithm = -1
+    startState=puzzle.PuzzleState([
+        [None,   None    ,None],
+        [None,   None    ,None],
+        [None,   None    ,None]])
+    
+    ShowPuzzle(startState)
+
 def buildTile(num):
     
     global tileIndex,entrySet,startState
@@ -156,61 +171,66 @@ def buildTile(num):
     if entrySet.__len__()==9:
         startButton = Button(window,foreground='#D6E4E5',background="#50577A",text='start',command=startSolve,font=('arial',18))
         startButton.place(x=SCALE*700,y=SCALE*(300))
+        resetButton = Button(window,foreground='#D6E4E5',background="#50577A",text='reset',command=resetPuzzle,font=('arial',14))
+        resetButton.place(x=SCALE*700,y=SCALE*(600))
         
         
 # =================___edit here___================= 
 def startSolve():
-    global startState,targetState,algorithm,solutionIndex,solution,solutionPath
-    print(startState)
-    print('checking wether its solvable or not ...')
-    if not solvable.isSolvable(startState.matrix):
-        print("this puzzle can't be solved because number of inversions is odd")
-        return
-    
-    print('puzzle is solvable')
-    print('solving the puzzle ...')
-    print(f'algorithm = {algorithm}')
-    # bfs
-    if algorithm == 0:
-        initial = startState.matrix
-        final = targetState.matrix
-        solution = FinalBFS.solve_BFS(initial, FinalBFS.findZero(initial), final)
-    # dfs
-    elif algorithm == 1:
+    global startState,targetState,algorithm,solutionIndex,solution,solutionPath,entrySet
 
-        mat = startState.matrix
-        for i in range(3):
-            for j in range(3):
-                if mat[i][j] == None:
-                    mat[i][j] = 0
-
-        initial_state = dfs.State(mat)
-        start = time.time()
-
-        solution = dfs.dfs_search(initial_state)
-        end = time.time()
-        print("The time of execution of DFS :",
-            (end - start) * 10 ** 3, "ms")
-    # euclidean a*
-    elif algorithm == 2:
-        solutionTree = aStar.Tree(startState,targetState)
-        solution = solutionTree.aStarTraverse('E')
-    # manhattan a*
-    elif algorithm == 3:
-        solutionTree = aStar.Tree(startState,targetState)
-        solution = solutionTree.aStarTraverse('M')
+    if entrySet.__len__() == 9:
+        print(startState)
+        print('checking wether its solvable or not ...')
+        if not solvable.isSolvable(startState.matrix):
+            print("this puzzle can't be solved because number of inversions is odd")
+            return
         
+        print('puzzle is solvable')
+        print('solving the puzzle ...')
+        print(f'algorithm = {algorithm}')
+        # bfs
+        if algorithm == 0:
+            initial = startState.matrix
+            final = targetState.matrix
+            solution = FinalBFS.solve_BFS(initial, FinalBFS.findZero(initial), final)
+        # dfs
+        elif algorithm == 1:
+
+            mat = startState.matrix
+            for i in range(3):
+                for j in range(3):
+                    if mat[i][j] == None:
+                        mat[i][j] = 0
+
+            initial_state = dfs.State(mat)
+            start = time.time()
+
+            solution = dfs.dfs_search(initial_state)
+            end = time.time()
+            print("The time of execution of DFS :",
+                (end - start) * 10 ** 3, "ms")
+        # euclidean a*
+        elif algorithm == 2:
+            solutionTree = aStar.Tree(startState,targetState)
+            solution = solutionTree.aStarTraverse('E')
+        # manhattan a*
+        elif algorithm == 3:
+            solutionTree = aStar.Tree(startState,targetState)
+            solution = solutionTree.aStarTraverse('M')
+            
+        else:
+            print('choose the algorithm')
+            return
+        print('puzzle solved successfully')
+        while solution is not None:
+            solutionPath.append(solution)
+            solution=solution.parent
+        
+        solutionIndex=solutionPath.__len__()-1
+            # ShowPuzzle(startState)
     else:
-        print('choose the algorithm')
-        return
-    print('puzzle solved successfully')
-    while solution is not None:
-        solutionPath.append(solution)
-        solution=solution.parent
-    
-    solutionIndex=solutionPath.__len__()-1
-        # ShowPuzzle(startState)
-        
+        print("enter all the tiles before start solving!!")
 
 def keyPressed(event):
     print(event.keysym)
