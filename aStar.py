@@ -52,10 +52,11 @@ class Tree:
 
 
 if __name__ == '__main__':
+    initial=([[1,2,5],[3,4,None],[6,7,8]])
     startState=PuzzleState([
         [1,      2          ,5],
-        [3,      4          ,8],
-        [6,      None       ,7]])
+        [3,      4          ,None],
+        [6,      7       ,8]])
 
     targetState=PuzzleState([
         [None,   1    ,2],
@@ -64,7 +65,7 @@ if __name__ == '__main__':
 
 
     solutionClass = Tree(startState,targetState)
-    solution = solutionClass.aStarTraverse(flag='M')
+    solution = solutionClass.aStarTraverse(flag='E')
     print(solution)
     # print("current state:")
     # print(startState)

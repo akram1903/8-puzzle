@@ -24,12 +24,16 @@ class State:
     def get_possible_level(self):
         level = []
         row, col = self.find_blank()
+        #top
         if row > 0:
             level.append((-1, 0))
+        #bottom
         if row < 2:
             level.append((1, 0))
+        #left
         if col > 0:
             level.append((0, -1))
+        #right
         if col < 2:
             level.append((0, 1))
         return level
@@ -66,12 +70,15 @@ class State:
         print(f'Goal state reached!')
         print(f"cost of the path is {len(path) - 1} ")
         print(f"search depth is :{search_depth}")
+        print(f"Num of explored nodes is :{len(explored)}")
+
 
         # for ex in explored:
         #     print(ex.matrix)
 
 
 def dfs_search(initial_state):
+    start = time.time()
     stack = [initial_state]
     search_depth = 0
     explored = set()
@@ -86,7 +93,10 @@ def dfs_search(initial_state):
         stacksearch.remove(current_state)
         # hashmap[current_state] = current_state.parent
         if current_state.is_goal_state():
+            end = time.time()
             current_state.print_path(hashmap, initial_state, search_depth, explored)
+            print("The time of execution of DFS :",(end - start) * 10 ** 3, "ms")
+            print(f"Num of explored nodes is :{len(explored)}")
             return current_state
             # return current_state.get_solution() ,search_depth
 
@@ -105,13 +115,11 @@ def dfs_search(initial_state):
 
 
 if __name__ == "__main__":
-    initial_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+    
+    initial_puzzle = ([[1,2,5],[3,4,0],[6,7,8]])
     # initial_puzzle =[[1, 0, 2], [3, 4, 5], [6, 7, 8]]
 
     initial_state = State(initial_puzzle)
-    start = time.time()
+   
 
     solution = dfs_search(initial_state)
-    end = time.time()
-    print("The time of execution of DFS :",
-          (end - start) * 10 ** 3, "ms")

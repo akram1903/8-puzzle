@@ -5,9 +5,9 @@ from queue import Queue
       
       # This variable can be changed to change  the program from 8 puzzle(n=3) to 15  puzzle(n=4) to 24 puzzle(n=5)...
 n = 3
-# bottom, left, top, right
-row = [ 1, 0, -1, 0 ]
-col = [ 0, -1, 0, 1 ]
+#top, bottom, left, right
+row = [-1, 1, 0, 0 ]
+col = [ 0,0, -1, 1 ]
 class node:
 
 
@@ -183,7 +183,8 @@ if __name__ == "__main__":
      #Not solvable example
      # initial=([[8,1,2],[None,4,3],[7,6,5]])
      #solvable example
-     initial=([[1,2,3],[4,5,6],[7,8,None]])
+    # 1,2,5,3,4,0,6,7,8
+     initial=([[1,2,5],[3,4,None],[6,7,8]])
      final=([[None,1,2],[3,4,5],[6,7,8]])
      
      
